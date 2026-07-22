@@ -1,0 +1,28 @@
+{
+  "v": 1,
+  "type": "RESULTS_UPDATE",
+  "data": {
+    "results": [
+      {
+        "candidate_id": 1,
+        "name": "Nguyễn Văn A",
+        "votes": 1,
+        "percent": 33.3
+      },
+      {
+        "candidate_id": 2,
+        "name": "Trần Thị B",
+        "votes": 1,
+        "percent": 33.3
+      },
+      {
+        "candidate_id": 3,
+        "name": "Lê Hoàng C",
+        "votes": 1,
+        "percent": 33.3
+      }
+    ],
+    "total_votes": 3,
+    "election_status": "open"
+  }
+}

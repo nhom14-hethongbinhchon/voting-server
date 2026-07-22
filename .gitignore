@@ -1,0 +1,22 @@
+# Chứng chỉ và khoá TLS không bao giờ được commit
+certs/*.crt
+certs/*.key
+
+# Cấu hình thật và dữ liệu chạy thật
+config.json
+data/*.json
+data/server_secret
+
+# Log runtime (thư mục tự tạo khi chạy)
+logs/
+
+# Môi trường ảo và cache Python
+.venv/
+__pycache__/
+*.pyc
+
+# File tạm của công cụ dòng lệnh
+.cli_token
+
+# Rác hệ điều hành
+.DS_Store

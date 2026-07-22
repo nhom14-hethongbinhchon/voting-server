@@ -1,0 +1,7 @@
+{
+  "v": 1,
+  "type": "ELECTION_STATE_CHANGED",
+  "data": {
+    "election_status": "open"
+  }
+}
