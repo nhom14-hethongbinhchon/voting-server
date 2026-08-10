@@ -28,6 +28,70 @@ python -m src.main --config config.json
 python -m src.main --no-tls --port 8443
 ```
 
+## Chạy trên Windows
+
+Server chạy được trên Windows, chỉ khác vài chỗ so với macOS/Linux. Client/Admin .NET thường
+chạy trên Windows nên phần này cũng tiện để test chung.
+
+**1. Cài Python 3.11+** từ [python.org](https://www.python.org/downloads/), nhớ tích
+**"Add python.exe to PATH"** lúc cài. Kiểm tra trong PowerShell hoặc CMD:
+
+```powershell
+python --version
+```
+
+Nếu gõ `python` không ăn, thử `py -3` (dùng `py -3` thay cho `python` ở mọi lệnh bên dưới).
+
+**2. Sinh dữ liệu mẫu rồi chạy** (dùng `python`, không phải `python3`; đường dẫn dùng `\`):
+
+```powershell
+python tools\seed_data.py
+python -m src.main --no-tls --port 8443
+```
+
+**3. Test bằng CLI** (mở cửa sổ PowerShell thứ hai):
+
+```powershell
+python tools\cli_client.py --no-tls admin-login admin admin123
+python tools\cli_client.py --no-tls open
+python tools\cli_client.py --no-tls login HS001 123456
+python tools\cli_client.py --no-tls vote 3
+python tools\cli_client.py --no-tls results
+```
+
+**Dừng server:** `Ctrl+C`.
+
+### TLS trên Windows
+
+`certs\gen_cert.sh` là script bash nên không chạy thẳng trên CMD/PowerShell. Chọn một cách:
+
+- **Git Bash** (Git for Windows có sẵn bash + openssl):
+  ```bash
+  bash certs/gen_cert.sh 192.168.1.10
+  ```
+- **Gọi openssl trực tiếp** trong PowerShell (dấu `` ` `` là nối dòng của PowerShell):
+  ```powershell
+  openssl req -x509 -newkey rsa:2048 -nodes -keyout certs\server.key -out certs\server.crt `
+    -days 825 -subj "/CN=voting-server" `
+    -addext "subjectAltName=DNS:localhost,IP:127.0.0.1,IP:192.168.1.10"
+  ```
+- Hoặc **sinh cert trên máy Mac/Linux rồi copy** `server.crt` + `server.key` vào thư mục `certs\`.
+
+Rồi chạy có TLS:
+
+```powershell
+copy config.example.json config.json
+python -m src.main --config config.json
+```
+
+### Cho máy khác trong LAN kết nối tới server Windows
+
+- **Tìm IP LAN:** chạy `ipconfig`, lấy dòng **IPv4 Address** (ví dụ `192.168.1.10`).
+- **Firewall:** lần đầu chạy server, Windows Defender Firewall sẽ hỏi — tích **Private networks**
+  rồi **Allow access**. Nếu lỡ bấm chặn, mở lại bằng Inbound Rule: *Windows Defender Firewall →
+  Advanced settings → Inbound Rules → New Rule → Port → TCP `8443` → Allow*.
+- Sinh lại cert đúng IP đó (mục TLS ở trên) rồi báo `IP:8443` cho các máy client.
+
 ## Công cụ dòng lệnh để test
 
 ```bash
